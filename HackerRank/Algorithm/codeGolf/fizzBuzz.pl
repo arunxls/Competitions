@@ -1,0 +1,1 @@
+map{print$_%3?$_%5?$_:'Buzz':$_%5?'Fizz':'FizzBuzz',$/}(1..100)
