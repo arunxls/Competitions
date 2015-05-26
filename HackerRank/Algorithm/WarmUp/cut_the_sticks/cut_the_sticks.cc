@@ -5,6 +5,7 @@
 #include <algorithm>
 using namespace std;
 
+// https://www.hackerrank.com/challenges/cut-the-sticks
 
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */ 

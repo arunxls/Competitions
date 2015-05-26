@@ -47,5 +47,5 @@ sub calculate
 
 print calculate(100,100/2);
 # my ($foo,$bar) = modInverse(322,701);
-# print $bar; 
+# print $bar;
 # get_comb(1000);
