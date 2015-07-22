@@ -24,39 +24,26 @@ public class Solution {
 
             ArrayList<ArrayList<String>> normalized = new ArrayList<ArrayList<String>>();
 
-            Integer limit = (int) Math.ceil(((float) column)/((float) 2));
-            System.out.println(limit);
+            Integer min = Math.min(row, column);
+            Integer limit = (int) Math.ceil(((float) min)/((float) 2));
             for(int i = 0; i < limit; i++) {
                 normalized.add(norm(matrix, i));
             }
 
-            // ArrayList<Integer> offsets = new ArrayList<Integer>();
-            // for(ArrayList<String> a: normalized) {
-            //     Integer len = a.size();
-            //     offsets.add((len+rotate)%len);
-            // }
+            ArrayList<Integer> offsets = new ArrayList<Integer>();
+            for(ArrayList<String> a: normalized) {
+                Integer len = a.size();
+                offsets.add((len+rotate)%len);
+            }
 
-            // // for(Integer x: offsets) {
-            // //     System.out.println(x);
-            // // }
+            String[][] new_matrix = get_rotated(normalized, offsets, row, column);
 
-            // String[][] new_matrix = get_rotated(normalized, offsets, row, column);
-
-            // for(int t = 0; t < row; t++) {
-            //     for(int s = 0; s < column; s++) {
-            //         System.out.print(new_matrix[t][s] + " ");
-            //     }
-            //     System.out.println("");
-            // }
-
-
-            // for(ArrayList<String> a: normalized) {
-            //     for (String s: a) {
-            //         System.out.print(s + " ");
-            //     }
-            //     System.out.println("");
-            // }
-
+            for(int t = 0; t < row; t++) {
+                for(int s = 0; s < column; s++) {
+                    System.out.print(new_matrix[t][s] + " ");
+                }
+                System.out.println("");
+            }
         } catch(Exception e) {
             System.err.println(e);
         }
@@ -65,7 +52,8 @@ public class Solution {
     public static String[][] get_rotated(ArrayList<ArrayList<String>> normalized, ArrayList<Integer> offsets, Integer row, Integer column) {
         String[][] matrix = new String[row][column];
 
-        Integer limit = (int) Math.ceil(((float) column)/((float) 2));
+        Integer min = Math.min(row, column);
+        Integer limit = (int) Math.ceil(((float) min)/((float) 2));
         for(int j = 0; j < limit; j++) {
             ArrayList<String> nums = normalized.get(j);
             Integer len = nums.size();
@@ -91,8 +79,6 @@ public class Solution {
             }
         }
 
-
-
         return matrix;
     }
 
@@ -111,21 +97,20 @@ public class Solution {
         // Add the elements in the order 1,2,3,4
 
         for(int i = offset; i < column-offset; i++) {
-            System.out.println(offset);
             temp.add(matrix[offset][i]);
         }
 
-        // for(int i = offset+1; i < row-offset; i++) {
-        //     temp.add(matrix[i][column-offset-1]);
-        // }
+        for(int i = offset+1; i < row-offset; i++) {
+            temp.add(matrix[i][column-offset-1]);
+        }
 
-        // for(int i = column-offset-2; i >= offset; i--) {
-        //     temp.add(matrix[row-offset-1][i]);
-        // }
+        for(int i = column-offset-2; i >= offset; i--) {
+            temp.add(matrix[row-offset-1][i]);
+        }
 
-        // for(int i = row-offset-2; i > offset; i--) {
-        //     temp.add(matrix[i][offset]);
-        // }
+        for(int i = row-offset-2; i > offset; i--) {
+            temp.add(matrix[i][offset]);
+        }
 
         return temp;
     }
