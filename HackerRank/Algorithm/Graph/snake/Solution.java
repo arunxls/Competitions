@@ -25,10 +25,10 @@ public class Solution {
                     String[] params = br.readLine().split(" ");
                     Integer start = Integer.parseInt(params[0]);
                     Integer end   = Integer.parseInt(params[1]);
-                    board.addEdge(start, end);
+                    board.addSnake(start, end);
                 }
 
-                // board.print();
+                board.print();
                 System.out.println(board.countToEnd());
             }
         } catch(Exception e) {
@@ -44,6 +44,7 @@ class Square {
 
     public Square (Integer index, Square neighbor) {
         this.index = index;
+        this.parent = null;
         this.neighbors = new HashSet<Square>();
         if(neighbor != null) {
             this.neighbors.add(neighbor);
@@ -81,12 +82,23 @@ class Board {
         s.addNeighbor(e);
     }
 
+    public void addSnake(Integer start, Integer end) {
+        Square s = game.get(start - 1);
+        Square e = game.get(end - 1);
+
+        // s.neighbors.clear();
+        s.addNeighbor(e);
+    }
+
     public Integer countToEnd() {
         //Perform BFS to the exit.
         Square start = game.get(0);
         Square end = game.get(size-1);
 
         ArrayList<Square> path = bfs(start, end);
+        if(path.size() == 0) {
+            return -1;
+        }
         Integer count = 0;
         Integer sub_count = 0;
 
@@ -138,17 +150,19 @@ class Board {
         }
 
         ArrayList<Square> path = new ArrayList<Square>();
-        path.add(end);
-        Square parent = end.parent;
-        while(parent != null) {
-            path.add(0, parent);
-            parent = parent.parent;
+        if(end.parent != null) {
+            path.add(end);
+            Square parent = end.parent;
+            while(parent != null) {
+                path.add(0, parent);
+                parent = parent.parent;
+            }
         }
 
-        // for(Square p : path) {
-        //     System.out.print(p.index + " -> ");
-        // }
-        // System.out.println("");
+        for(Square p : path) {
+            System.out.print(p.index + " -> ");
+        }
+        System.out.println("");
 
         return path;
     }
