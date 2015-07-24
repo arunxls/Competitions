@@ -25,10 +25,10 @@ public class Solution {
                     String[] params = br.readLine().split(" ");
                     Integer start = Integer.parseInt(params[0]);
                     Integer end   = Integer.parseInt(params[1]);
-                    board.addSnake(start, end);
+                    board.addEdge(start, end);
                 }
 
-                board.print();
+                // board.print();
                 System.out.println(board.countToEnd());
             }
         } catch(Exception e) {
