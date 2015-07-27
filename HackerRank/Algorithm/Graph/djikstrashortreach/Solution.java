@@ -8,7 +8,7 @@ public class Solution {
     public static void main(String[] args) {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
-            Integer test_cases = 1;
+            Integer test_cases = Integer.parseInt(br.readLine());
             for(int t = 0; t < test_cases; t++) {
                 String[] params = br.readLine().split(" ");
                 Graph graph = new Graph(Integer.parseInt(params[0]));
@@ -41,14 +41,12 @@ class Graph {
     }
 
     public void print() {
-        Integer count = 0;
         for(Vertex v: vertices) {
             if(v.distance != 0) {
                 System.out.print(v.distance + " ");
-                count += v.distance;
             }
         }
-        System.out.println(count);
+        System.out.println("");
     }
 
     public void addEdge(Integer s, Integer e, Integer weight) {
@@ -71,7 +69,7 @@ class Graph {
             seen.add(current);
 
             for(Vertex v: current.neighbors) {
-                Integer new_distance = v.edges.get(current).weight;
+                Integer new_distance = current.distance + v.edges.get(current).weight;
                 if(new_distance < v.distance || v.distance == -1) {
                     v.distance = new_distance;
                     fringe.update(v);
