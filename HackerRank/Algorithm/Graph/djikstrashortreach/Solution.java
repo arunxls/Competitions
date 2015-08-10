@@ -69,10 +69,12 @@ class Graph {
             seen.add(current);
 
             for(Vertex v: current.neighbors) {
-                Integer new_distance = current.distance + v.edges.get(current).weight;
-                if(new_distance < v.distance || v.distance == -1) {
-                    v.distance = new_distance;
-                    fringe.update(v);
+                if(!seen.contains(v)) {
+                    Integer new_distance = current.distance + v.edges.get(current).weight;
+                    if(new_distance < v.distance || v.distance == -1) {
+                        v.distance = new_distance;
+                        fringe.update(v);
+                    }
                 }
             }
         }

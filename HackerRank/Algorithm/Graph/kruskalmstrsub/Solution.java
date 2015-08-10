@@ -21,7 +21,8 @@ public class Solution {
                     graph.addEdge(start, end, weight);
                 }
 
-                graph.djikstra(Integer.parseInt(br.readLine()));
+//                graph.djikstra(Integer.parseInt(br.readLine()));
+                graph.djikstra(1);
                 graph.print();
             }
         } catch (Exception e) {
@@ -44,7 +45,7 @@ class Graph {
         Integer count = 0;
         for(Vertex v: vertices) {
             if(v.distance != 0) {
-                System.out.print(v.distance + " ");
+//                System.out.print(v.distance + " ");
                 count += v.distance;
             }
         }
@@ -61,26 +62,32 @@ class Graph {
 
     public void djikstra(Integer s) {
         Vertex start   = this.vertices.get(s-1);
-        Heap<Vertex> fringe = new Heap<Vertex>();
+//        Heap<Vertex> fringe = new Heap<Vertex>();
+        PriorityQueue<Vertex> fringe = new PriorityQueue<Vertex>();
         HashSet<Vertex> seen = new HashSet<Vertex>();
         start.distance = 0;
         fringe.add(start);
 
         while(fringe.size() > 0) {
-            Vertex current = fringe.pop();
+            Vertex current = fringe.peek();
+            fringe.remove(current);
             seen.add(current);
 
             for(Vertex v: current.neighbors) {
-                Integer new_distance = v.edges.get(current).weight;
-                if(new_distance < v.distance || v.distance == -1) {
-                    v.distance = new_distance;
-                    fringe.update(v);
+                if(!seen.contains(v)) {
+                    Integer new_distance = v.edges.get(current).weight;
+                    if(new_distance < v.distance || v.distance == -1) {
+                        v.distance = new_distance;
+                        fringe.remove(v);
+                        fringe.add(v);
+                    }
                 }
             }
         }
     }
 }
 
+// There is a bug in the Heap code - FIXME
 class Heap<T extends Comparable<T>> {
     private ArrayList<T> elements;
     private HashMap<T, Integer> positions;
@@ -121,7 +128,18 @@ class Heap<T extends Comparable<T>> {
     }
 
     public T pop() {
-        return remove(1);
+//        return remove(1);
+
+        T min = elements.get(1);
+        for(T t: elements) {
+            if(t == null) {
+                continue;
+            }
+            if(t.compareTo(min) < 0) {
+                min = t;
+            }
+        }
+        return min;
     }
 
     public T remove(Integer s) {
