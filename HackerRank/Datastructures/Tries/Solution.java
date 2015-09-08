@@ -20,7 +20,7 @@ public class Solution {
                 }
             }
 
-            if(!flag) {
+            if(word.equals("")) {
                 System.out.println("GOOD SET");
             } else {
                 System.out.println("BAD SET");
@@ -33,17 +33,31 @@ public class Solution {
 }
 
 class Trie {
-    Node root = new Node();
+    Node root;
+
+    Trie() {
+        root = new Node();
+    }
 
     public boolean add(String word) {
         Node current = root;
         Boolean flag = false;
 
-        char[] charArray = word.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            char w = charArray[i];
-            int index = w - 'a';
-            if (current.p[index] != null && ((current.p[index].word) || i == charArray.length - 1)) {
+        char[] words = word.toCharArray();
+
+        int index = words[0] - 'a';
+        current = current.get(index);
+
+        for (int i = 1; i < words.length; i++) {
+            Character w = words[i];
+            index = w - 'a';
+            current = current.get(index);
+        }
+
+        for (int i = 2; i < words.length; i++) {
+            Character w = words[i];
+            index = w - 'a';
+            if(current.p[index] != null) {
                 flag = true;
             }
             current = current.get(index);
@@ -56,8 +70,12 @@ class Trie {
 }
 
 class Node {
-    Node[] p = new Node[40];
-    boolean word = false;
+    Node[] p = new Node[10];
+    boolean word;
+
+    Node() {
+        word = false;
+    }
 
     public Node get(int index) {
         if(p[index] == null) {
@@ -65,5 +83,15 @@ class Node {
         }
 
         return p[index];
+    }
+
+    public int size() {
+        int s = 0;
+        for(Node n : p) {
+            if(n != null) {
+                s++;
+            }
+        }
+        return s;
     }
 }
