@@ -1,69 +1,86 @@
+import java.lang.*;
 import java.io.*;
 import java.util.*;
-import java.lang.*;
 
 public class Solution {
     public static void main(String[] args) {
+        int ROW = 3;
+        int COLUMN = 3;
+
+        Grid grid = new Grid(ROW, COLUMN);
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            int n = Integer.parseInt(br.readLine());
-            Trie trie = new Trie();
-            boolean flag = false;
-            String word = "";
+        while (true) {
+            try {
+                System.out.println("Enter Input (row,column):");
+                String[] input = br.readLine().split(",");
+                int row = Integer.parseInt(input[0]);
+                int column = Integer.parseInt(input[1]);
+                if ((row >= ROW) || (column >= COLUMN)) {
+                    System.err.println("Invalid input - try again!");
+                } else {
+                    grid.set(row, column, State.X);
 
-            for(int i = 0; i < n; i++) {
-                if(!flag) {
-                    word = br.readLine();
-                    if(trie.add(word)) {
-                        flag = true;
-                    }
+                    grid.print();
                 }
-            }
 
-            if(!flag) {
-                System.out.println("GOOD SET");
-            } else {
-                System.out.println("BAD SET");
-                System.out.println(word);
+
+            } catch (Exception e) {
+                System.err.println(e);
             }
-        } catch(Exception e) {
-            System.err.println(e);
+        }
+
+    }
+}
+
+enum State {
+    X, O, NONE
+}
+
+class Grid {
+    Cell[][] board;
+
+    Grid(int row, int column) {
+        board = new Cell[row][column];
+        for(int i = 0; i < row; i++) {
+            for(int j = 0; j < column; j++) {
+                board[i][j] = new Cell();
+            }
+        }
+    }
+
+    void set(int r, int c, State state) {
+        board[r][c].value = state;
+    }
+
+    void print() {
+        for(Cell[] row: board) {
+            String[] contents = new String[row.length];
+            for(int i = 0; i < row.length; i++) {
+                contents[i] = row[i].toString();
+            }
+            System.out.println(String.join(" | ", contents));
+            System.out.println(new String(new char[3 * row.length]).replace('\0', '-'));
         }
     }
 }
 
-class Trie {
-    Node root = new Node();
+class Cell {
+    public State value;
 
-    public boolean add(String word) {
-        Node current = root;
-        Boolean flag = false;
+    Cell() {
+        this.value = State.NONE;
+    }
 
-        char[] charArray = word.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            char w = charArray[i];
-            int index = w - 'a';
-            if (current.p[index] != null && ((current.p[index].word) || i == charArray.length - 1)) {
-                flag = true;
-            }
-            current = current.get(index);
+    @Override
+    public String toString() {
+        if(value == State.X) {
+            return "X";
+        } else if(value == State.O) {
+            return "O";
+        } else {
+            return " ";
         }
-
-        current.word = true;
-
-        return flag;
     }
 }
 
-class Node {
-    Node[] p = new Node[40];
-    boolean word = false;
-
-    public Node get(int index) {
-        if(p[index] == null) {
-            p[index] = new Node();
-        }
-
-        return p[index];
-    }
-}
