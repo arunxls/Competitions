@@ -29,7 +29,6 @@ public class Solution {
         int pivot = array[(left + right)/2];
         int i = left;
         int j = right;
-        int temp;
 
         while(i <= j) {
             while(array[i] < pivot) {
@@ -41,24 +40,20 @@ public class Solution {
             }
 
             if(i <= j) {
-                temp = array[i];
+                int temp = array[i];
                 array[i]     = array[j];
                 array[j]     = temp;
-                i++; j--;
             }
         }
 
-        if(left < j) {
-            quickSort(left, j);
+        if(left < i) {
+            quickSort(left, i);
         }
 
-        if(right > i) {
-            quickSort(i, right);
+        if(right > j) {
+            quickSort(right, j);
         }
-
     }
-
-
 
     static void partition() {
 
